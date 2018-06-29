@@ -1,0 +1,181 @@
+﻿<UserControl x:Class="Plugin_Entwicklung.MainWindowControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             Background="White"
+             Foreground="Black"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="PatternCheck">
+    <Grid>
+        <TabControl Height="227" Margin="10,10,10,10" VerticalAlignment="Top" Width="auto" HorizontalAlignment="Stretch">
+            <TabItem Header="General" Width="auto">
+                <Grid Background="#FFE5E5E5" Width="auto" Height="auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" MaxWidth="150"/>
+                        <ColumnDefinition Width="*" MaxWidth="150"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock TextWrapping="Wrap" Text="Patterns to check :" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <TextBlock TextWrapping="Wrap" Text="MVVM" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <CheckBox Name="checkBox_MVVM" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
+                    <TextBlock TextWrapping="Wrap" Text="Singleton" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <CheckBox Name="checkBox_Singleton" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
+                    <TextBlock TextWrapping="Wrap" Text="Kleinigkeiten :" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <TextBlock TextWrapping="Wrap" Text="Namenskonventionen" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <CheckBox Name="checkBox_NamingConventions" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
+                    <TextBlock TextWrapping="Wrap" Text="Zeilenlänge" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <CheckBox Name="checkBox_LineLength" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="MVVM">
+                <Grid Background="#FFE5E5E5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ListBox Name="listBox_Items" Width="auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="5">
+
+                    </ListBox>
+
+                    <Grid Name="grid_Controls" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" MaxHeight="30"/>
+                            <RowDefinition Height="*" MaxHeight="30"/>
+                            <RowDefinition Height="*" MaxHeight="30"/>
+                        </Grid.RowDefinitions>
+                        <Button Content="To Model" Height="auto" Width="60" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2"></Button>
+                        <Button Content="To VM" Height="auto" Width="60" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2"></Button>
+                        <Button Content="To View" Height="auto" Width="60" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2"></Button>
+                    </Grid>
+
+                    <Grid Name="grid_Model" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" MaxHeight="30"/>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Model" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                        <ListBox Name="listBox_Model" Grid.Row="1" Width="auto" HorizontalAlignment="Stretch" Padding="5">
+
+                        </ListBox>
+                    </Grid>
+
+                    <Grid Name="grid_ViewModel" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" MaxHeight="30"/>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="ViewModel" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                        <ListBox Name="listBox_ViewModel" Grid.Row="1" Width="auto" HorizontalAlignment="Stretch" Padding="5">
+
+                        </ListBox>
+                    </Grid>
+
+                    <Grid Name="grid_View" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" MaxHeight="30"/>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="View" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                        <ListBox Name="listBox_View" Grid.Row="1" Width="auto" HorizontalAlignment="Stretch" Padding="5">
+
+                        </ListBox>
+                    </Grid>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Singleton">
+                <Grid Background="#FFE5E5E5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Name="grid_NotSingleton" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" MaxHeight="30"/>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Not Singleton" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                        <ListBox Name="listBox_NonSingleton" HorizontalAlignment="Stretch" Padding="5" Grid.Row="1">
+
+                        </ListBox>
+                    </Grid>
+
+                    <Button Content="Swap" Height="20" Width="60" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1"></Button>
+
+                    <Grid Name="grid_Singleton" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" MaxHeight="30"/>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Singleton" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                        <ListBox Name="listBox_Singleton" HorizontalAlignment="Stretch" Padding="5" Grid.Row="1">
+
+                        </ListBox>
+                    </Grid>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Kleinigkeiten">
+                <Grid Background="#FFE5E5E5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock TextWrapping="Wrap" Text="Max. Zeilenlänge : " Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <TextBox Name="textBox_lengthLines" Grid.Column="1" Grid.Row="0"  MinWidth="50" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                    <TextBlock TextWrapping="Wrap" Text="Namenskonventionen" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <TextBlock TextWrapping="Wrap" Text="Case Variablen" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <ComboBox Name="comboBox_caseVariables" Grid.Column="1" Grid.Row="2">
+                        <ComboBoxItem Name="caseVariables_pascalCase" Content="PascalCase"/>
+                        <ComboBoxItem Name="caseVariables_camelCase" Content="camelCase"/>
+                    </ComboBox>
+                    <TextBlock TextWrapping="Wrap" Text="Case Properties" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <ComboBox Name="comboBox_caseProperties" Grid.Column="1" Grid.Row="3">
+                        <ComboBoxItem Name="caseProperties_pascalCase" Content="PascalCase"/>
+                        <ComboBoxItem Name="caseProperties_camelCase" Content="camelCase"/>
+                    </ComboBox>
+                    <TextBlock TextWrapping="Wrap" Text="Länge Variablen" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <TextBox Name="textBox_lengthVariables" Grid.Column="1" Grid.Row="4"  MinWidth="50" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock TextWrapping="Wrap" Text="Länge Properties" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <TextBox Name="textBox_lengthProperties" Grid.Column="1" Grid.Row="5"  MinWidth="50" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <Button Content="Check. That. Pattern!" Height="50" Width="auto" VerticalAlignment="Bottom" Margin="10" Click="button1_Click"></Button>
+    </Grid>
+</UserControl>
