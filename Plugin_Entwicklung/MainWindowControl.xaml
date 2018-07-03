@@ -6,24 +6,26 @@
              Background="White"
              Foreground="Black"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300"
+             d:DesignHeight="300" d:DesignWidth="350"
+			 MinHeight="300" MinWidth="350"
              Name="PatternCheck">
-    <Grid>
-        <TabControl Height="227" Margin="10,10,10,10" VerticalAlignment="Top" Width="auto" HorizontalAlignment="Stretch">
+	<Grid>
+		<TabControl Height="227" Margin="10,10,10,10" VerticalAlignment="Top" Width="auto" HorizontalAlignment="Stretch">
             <TabItem Header="General" Width="auto">
                 <Grid Background="#FFE5E5E5" Width="auto" Height="auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" MaxWidth="150"/>
-                        <ColumnDefinition Width="*" MaxWidth="150"/>
-                    </Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" MaxWidth="150"/>
+					</Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
                     <TextBlock TextWrapping="Wrap" Text="Patterns to check :" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
                     <TextBlock TextWrapping="Wrap" Text="MVVM" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <CheckBox Name="checkBox_MVVM" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
@@ -33,8 +35,14 @@
                     <TextBlock TextWrapping="Wrap" Text="Namenskonventionen" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
                     <CheckBox Name="checkBox_NamingConventions" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
                     <TextBlock TextWrapping="Wrap" Text="Zeilenlänge" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                    <CheckBox Name="checkBox_LineLength" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
-                </Grid>
+					<CheckBox Name="checkBox_LineLength" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
+					<TextBlock TextWrapping="Wrap" Text="In Projekt :" Grid.Column="0" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+
+					<ComboBox Name="comboBox_Projects" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center" 
+							ItemsSource="{Binding Path=Projects}" DisplayMemberPath="Name" SelectedItem="{Binding Path=SelectedProject, Mode=TwoWay}">
+					</ComboBox>
+
+				</Grid>
             </TabItem>
             <TabItem Header="MVVM">
                 <Grid Background="#FFE5E5E5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -176,6 +184,13 @@
             </TabItem>
         </TabControl>
 
-        <Button Content="Check. That. Pattern!" Height="50" Width="auto" VerticalAlignment="Bottom" Margin="10" Click="button1_Click"></Button>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Button Content="Check. That. Pattern!" Height="50" Width="auto" VerticalAlignment="Bottom" Margin="10" Click="CheckProject" Grid.Column="0"></Button>
+			<Button Content="Refresh. That. Workspace!" Height="50" Width="auto" VerticalAlignment="Bottom" Margin="10" Click="RefreshWorkspace" Grid.Column="1"></Button>
+		</Grid>
     </Grid>
 </UserControl>

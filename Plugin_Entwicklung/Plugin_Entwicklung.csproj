@@ -54,6 +54,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controller\LineLengthController.cs" />
+    <Compile Include="Controller\MVVMController.cs" />
+    <Compile Include="Controller\NamingController.cs" />
+    <Compile Include="Controller\SingletonController.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="MainWindowCommand.cs" />
     <Compile Include="MainWindowControl.xaml.cs">
