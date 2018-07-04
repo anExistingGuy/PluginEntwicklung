@@ -55,8 +55,9 @@
                 string.Format(System.Globalization.CultureInfo.CurrentUICulture, "Invoked '{0}'", this.ToString()),
                 "MainWindow");
             new Controller.NamingController().CheckNaming(SelectedProject);
-            //new Controller.LineLengthController().CheckLineLength(this.SelectedProject, int.Parse(this.textBox_lengthLines.ToString()));
-        }
+			new Controller.ImportsUsedController().CheckImports(SelectedProject);
+			//new Controller.LineLengthController().CheckLineLength(this.SelectedProject, int.Parse(this.textBox_lengthLines.ToString()));
+		}
 
         private void RefreshWorkspace(object sender, RoutedEventArgs e)
         {
