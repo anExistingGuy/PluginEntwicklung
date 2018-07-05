@@ -17,7 +17,7 @@ namespace Plugin_Entwicklung.Controller
         {
             IComponentModel componentModel = (IComponentModel)Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(SComponentModel));
             var workspace = componentModel.GetService<Microsoft.VisualStudio.LanguageServices.VisualStudioWorkspace>();
-
+            
             foreach (var document in project.Documents)
             {
                 if (document != null)

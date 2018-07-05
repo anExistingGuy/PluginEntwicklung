@@ -55,9 +55,10 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <ListBox Name="listBox_Items" Width="auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="5">
-
-                    </ListBox>
+					<ListBox Name="listBox_Items" Width="auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="5"
+							 ItemsSource="{Binding Path=DocumentsUnassigned, Mode=TwoWay}" DisplayMemberPath="Name"
+							 GotFocus="ShiftFocus">
+					</ListBox>
 
                     <Grid Name="grid_Controls" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Column="1">
                         <Grid.RowDefinitions>
@@ -65,9 +66,12 @@
                             <RowDefinition Height="*" MaxHeight="30"/>
                             <RowDefinition Height="*" MaxHeight="30"/>
                         </Grid.RowDefinitions>
-                        <Button Content="To Model" Height="auto" Width="60" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2"></Button>
-                        <Button Content="To VM" Height="auto" Width="60" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2"></Button>
-                        <Button Content="To View" Height="auto" Width="60" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2"></Button>
+                        <Button Name="button_ToModel" Content="To Model" Height="auto" Width="60" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2"
+								Focusable="False" Click="MoveItem"></Button>
+                        <Button Name="button_ToVM" Content="To VM" Height="auto" Width="60" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2"
+								Focusable="False" Click="MoveItem"></Button>
+                        <Button Name="button_ToView" Content="To View" Height="auto" Width="60" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2"
+								Focusable="False" Click="MoveItem"></Button>
                     </Grid>
 
                     <Grid Name="grid_Model" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="2">
@@ -76,9 +80,10 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <TextBlock Text="Model" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
-                        <ListBox Name="listBox_Model" Grid.Row="1" Width="auto" HorizontalAlignment="Stretch" Padding="5">
-
-                        </ListBox>
+						<ListBox Name="listBox_Model" Grid.Row="1" Width="auto" HorizontalAlignment="Stretch" Padding="5"
+								 ItemsSource="{Binding Path=DocumentsModel, Mode=TwoWay}" DisplayMemberPath="Name"
+								 GotFocus="ShiftFocus">
+						</ListBox>
                     </Grid>
 
                     <Grid Name="grid_ViewModel" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="3">
@@ -87,9 +92,10 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <TextBlock Text="ViewModel" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
-                        <ListBox Name="listBox_ViewModel" Grid.Row="1" Width="auto" HorizontalAlignment="Stretch" Padding="5">
-
-                        </ListBox>
+						<ListBox Name="listBox_ViewModel" Grid.Row="1" Width="auto" HorizontalAlignment="Stretch" Padding="5"
+								 ItemsSource="{Binding Path=DocumentsViewModel, Mode=TwoWay}" DisplayMemberPath="Name"
+								 GotFocus="ShiftFocus">
+						</ListBox>
                     </Grid>
 
                     <Grid Name="grid_View" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="4">
@@ -98,9 +104,10 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <TextBlock Text="View" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
-                        <ListBox Name="listBox_View" Grid.Row="1" Width="auto" HorizontalAlignment="Stretch" Padding="5">
-
-                        </ListBox>
+						<ListBox Name="listBox_View" Grid.Row="1" Width="auto" HorizontalAlignment="Stretch" Padding="5"
+								 ItemsSource="{Binding Path=DocumentsView, Mode=TwoWay}" DisplayMemberPath="Name"
+								 GotFocus="ShiftFocus">
+						</ListBox>
                     </Grid>
 
                 </Grid>
@@ -122,12 +129,14 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Not Singleton" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                        <ListBox Name="listBox_NonSingleton" HorizontalAlignment="Stretch" Padding="5" Grid.Row="1">
-
-                        </ListBox>
+						<ListBox Name="listBox_NonSingleton" HorizontalAlignment="Stretch" Padding="5" Grid.Row="1"
+								 ItemsSource="{Binding Path=DocumentsNonSingleton, Mode=TwoWay}" DisplayMemberPath="Name"
+								 GotFocus="ShiftFocus">
+						</ListBox>
                     </Grid>
 
-                    <Button Content="Swap" Height="20" Width="60" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1"></Button>
+                    <Button Name="button_SwapSingleton" Content="Swap" Height="20" Width="60" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1"
+							Click="SwapItem"></Button>
 
                     <Grid Name="grid_Singleton" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
@@ -137,9 +146,10 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Singleton" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                        <ListBox Name="listBox_Singleton" HorizontalAlignment="Stretch" Padding="5" Grid.Row="1">
-
-                        </ListBox>
+						<ListBox Name="listBox_Singleton" HorizontalAlignment="Stretch" Padding="5" Grid.Row="1"
+								 ItemsSource="{Binding Path=DocumentsSingleton, Mode=TwoWay}" DisplayMemberPath="Name"
+								 GotFocus="ShiftFocus">
+						</ListBox>
                     </Grid>
 
                 </Grid>
