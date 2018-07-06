@@ -11,88 +11,157 @@ using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Text.RegularExpressions;
 
+
 namespace Plugin_Entwicklung.Controller
 {
     class NamingController
     {
 
-        public void CheckNaming(Project project,List<string> permittedmethodstrings)
+        public void CheckNaming(Project project,List<string> permittedmethodstrings,
+			List<string> permittedvariablestrings, List<string> permittedpropertystrings,
+			bool ismethodchecked, bool isvariablechecked, bool isclasschecked, bool ispropertychecked, bool isnamespacechecked)
         {
             foreach (var document in project.Documents)
             {
                 if (document != null)
                 {
-                        //SyntaxTree tree = CSharpSyntaxTree.ParseText(doctext);
                         SyntaxTree tree;
                         Task<SyntaxTree> t = document.GetSyntaxTreeAsync();
                         tree = t.Result;
-						if (true)
+						if (ismethodchecked)
 						{
 							List<MethodDeclarationSyntax> list = tree.GetRoot().DescendantNodes().OfType<MethodDeclarationSyntax>().ToList();
-							methodnaming(list, permittedmethodstrings);
+							Methodnaming(list, permittedmethodstrings);
 						}
-						if (true)
+					    if (isvariablechecked)
+					    {
+						List<VariableDeclaratorSyntax> list = tree.GetRoot().DescendantNodes().OfType<VariableDeclaratorSyntax>().ToList();
+						Variablenaming(list, permittedvariablestrings);
+					    }
+					    if (isclasschecked)
 						{
 							List<ClassDeclarationSyntax> list = tree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>().ToList();
-							classnaming(list);
+							Classnaming(list);
 						}
-						if (true)
-						{
-							List<VariableDeclaratorSyntax> list = tree.GetRoot().DescendantNodes().OfType<VariableDeclaratorSyntax>().ToList();
-							variablenaming(list);
-						}
-						if (true)
+					    if (ispropertychecked)
+					    {
+						    List<PropertyDeclarationSyntax> list = tree.GetRoot().DescendantNodes().OfType<PropertyDeclarationSyntax>().ToList();
+						    Propertynaming(list, permittedpropertystrings);
+					    }
+				     	if (isnamespacechecked)
 						{
 							List<NamespaceDeclarationSyntax> list = tree.GetRoot().DescendantNodes().OfType<NamespaceDeclarationSyntax>().ToList();
-							namespacenaming(list);
+						    List<string> folders = document.Folders.ToList();
+						    String projekt = document.Project.Name;
+						    Namespacenaming(list, projekt, folders);
 						}
                 }
             }
         }
 
-		public void methodnaming(List<MethodDeclarationSyntax> list, List<string> permittedmethodstrings)
+		public void Methodnaming(List<MethodDeclarationSyntax> list, List<string> permittedmethodstrings)
 		{
 			list.ForEach(delegate (MethodDeclarationSyntax mds)
 			{
-
-				permittedmethodstrings.ForEach(delegate (string permittedstring)
+				string currentmethodname = mds.Identifier.ToString();
+				string regexmatchstring = currentmethodname;
+				System.Diagnostics.Debug.WriteLine("Counter: " + permittedmethodstrings.Count());
+				if (permittedmethodstrings.Equals(""))
 				{
-					string currentmethodname = mds.Identifier.ToString();
-					string regexmatchstring = currentmethodname.Replace(permittedstring, "");
-					if (!currentmethodname.Contains(permittedstring) && Regex.Matches(regexmatchstring, @"[a-zA-Z ]").Count == currentmethodname.Length)
+					permittedmethodstrings.ForEach(delegate (string permittedstring)
 					{
-						
-					}
-					else
-					{
-						System.Diagnostics.Debug.WriteLine("Alarm: " + mds.Identifier);
-					}
-				});
-				System.Diagnostics.Debug.WriteLine("Methodenname: " + mds.Identifier.ToString());
+						regexmatchstring = regexmatchstring.Replace(permittedstring, "");
+					});
+				}
+				if (Regex.Matches(regexmatchstring, @"[a-zA-Z ]").Count == regexmatchstring.Length)
+				{
+
+				}
+				else
+				{
+					System.Diagnostics.Debug.WriteLine("Fehlerhafter Methodenname: " + mds.Identifier);
+				}
 			});
 		}
 
-		public void classnaming(List<ClassDeclarationSyntax> list)
-		{
-			list.ForEach(delegate (ClassDeclarationSyntax cds)
-			{
-				System.Diagnostics.Debug.WriteLine("Klassenname: " + cds.Identifier);
-			});
-		}
-
-		public void variablenaming(List<VariableDeclaratorSyntax> list)
+		public void Variablenaming(List<VariableDeclaratorSyntax> list, List<string> permittedvariablestrings)
 		{
 			list.ForEach(delegate (VariableDeclaratorSyntax vds)
 			{
-				System.Diagnostics.Debug.WriteLine("Variablenname: " + vds.Identifier);
+				string currentvariablename = vds.Identifier.ToString();
+				string regexmatchstring = currentvariablename;
+				if (permittedvariablestrings.Equals(""))
+				{
+					permittedvariablestrings.ForEach(delegate (string permittedstring)
+					{
+						regexmatchstring = regexmatchstring.Replace(permittedstring, "");
+					});
+				}
+						if (Regex.Matches(regexmatchstring, @"[a-zA-Z ]").Count == regexmatchstring.Length)
+						{
+
+						}
+						else
+						{
+							System.Diagnostics.Debug.WriteLine("Fehlerhafter Variablenname: " + vds.Identifier);
+						}
 			});
 		}
 
-		public void namespacenaming(List<NamespaceDeclarationSyntax> list)
+		public void Classnaming(List<ClassDeclarationSyntax> list)
 		{
+			list.ForEach(delegate (ClassDeclarationSyntax cds)
+			{
+					string currentclassname = cds.Identifier.ToString();
+					if (char.IsUpper(currentclassname[0]) && Regex.Matches(currentclassname, @"[a-zA-Z ]").Count == currentclassname.Length)
+					{
+
+					}
+					else
+					{
+					System.Diagnostics.Debug.WriteLine("Klassennamefehler: " + cds.Identifier);
+				}
+			});
+		}
+
+		public void Propertynaming(List<PropertyDeclarationSyntax> list, List<string> permittedpropertystrings)
+		{
+			list.ForEach(delegate (PropertyDeclarationSyntax vds)
+			{
+				string currentvariablename = vds.Identifier.ToString();
+				string regexmatchstring = currentvariablename;
+				if (permittedpropertystrings.Equals(""))
+				{
+					permittedpropertystrings.ForEach(delegate (string permittedstring)
+					{
+						regexmatchstring = regexmatchstring.Replace(permittedstring, "");
+					});
+				}
+						if (Regex.Matches(regexmatchstring, @"[a-zA-Z ]").Count == regexmatchstring.Length)
+						{
+
+						}
+						else
+						{
+							System.Diagnostics.Debug.WriteLine("Fehlerhafter Propertyname: " + vds.Identifier);
+						}
+			});
+		}
+
+		public void Namespacenaming(List<NamespaceDeclarationSyntax> list, String projekt, List<string> folders)
+		{
+			String desirednamespace=projekt;
+			if (list.Count > 1) {
+				System.Diagnostics.Debug.WriteLine("Nur 1 Namespace im Dokument ");
+			}
 			list.ForEach(delegate (NamespaceDeclarationSyntax nds)
 			{
-				System.Diagnostics.Debug.WriteLine("Namespacename: " + nds.Name);
+				folders.ForEach(delegate (string fldr)
+				{
+					desirednamespace += "." + fldr;
+				});
+
+				System.Diagnostics.Debug.WriteLine("Namespacename: " + nds.Name + "Desirednamespace: "+ desirednamespace);
 			});
 		}
 	}

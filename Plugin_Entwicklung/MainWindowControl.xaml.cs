@@ -108,7 +108,8 @@
                 // SplitString() für erlaubte Sonderzeichen, if-stmnts für einzelne Namings (Variablen, Properties, etc)
                 List<string> permittedCharsMethods;
                 permittedCharsMethods = SplitString(textBox_specialCharsMethods.Text);
-                new Controller.NamingController().CheckNaming(SelectedProject, permittedCharsMethods);
+                new Controller.NamingController().
+					CheckNaming(SelectedProject, permittedCharsMethods, new List<string>() { "_" }, new List<string>() { "_" },true,true,true,true,true);
             }
 
             if ((bool)checkBox_imports.IsChecked)
