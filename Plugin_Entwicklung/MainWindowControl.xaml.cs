@@ -98,11 +98,28 @@
                 string.Format(System.Globalization.CultureInfo.CurrentUICulture, "Invoked '{0}'", this.ToString()),
                 "MainWindow");
 
-            //new Controller.LineLengthController().CheckLineLength(this.SelectedProject, int.Parse(this.textBox_lengthLines.Text));
-            new Controller.NamingController().CheckNaming(SelectedProject,new List<string>() {"_"});
-            //new Controller.ImportsUsedController().CheckImports(SelectedProject);
-            //new Controller.LineLengthController().CheckLineLength(this.SelectedProject, int.Parse(this.textBox_lengthLines.ToString()));
-           // new Controller.SingletonController().CheckSingleton(SelectedProject, DocumentsSingleton);
+            if ((bool)checkBox_LineLength.IsChecked)
+            {
+                new Controller.LineLengthController().CheckLineLength(this.SelectedProject, int.Parse(this.textBox_lengthLines.Text));
+            }
+
+            if ((bool)checkBox_Naming.IsChecked)
+            {
+                // SplitString() für erlaubte Sonderzeichen, if-stmnts für einzelne Namings (Variablen, Properties, etc)
+                List<string> permittedCharsMethods;
+                permittedCharsMethods = SplitString(textBox_specialCharsMethods.Text);
+                new Controller.NamingController().CheckNaming(SelectedProject, permittedCharsMethods);
+            }
+
+            if ((bool)checkBox_imports.IsChecked)
+            {
+                new Controller.ImportsUsedController().CheckImports(SelectedProject);
+            }
+            
+            if ((bool)checkBox_Singleton.IsChecked)
+            {
+                new Controller.SingletonController().CheckSingleton(SelectedProject, DocumentsSingleton);
+            }
         }
 
         private void RefreshWorkspace(object sender, RoutedEventArgs e)
@@ -203,6 +220,20 @@
             {
                 lastFocusedListBoxSingleton = listBox;
             }
+        }
+
+        private List<string> SplitString(string input)
+        {
+            List<string> res = new List<string>();
+
+            string[] substrings = input.Split(',');
+
+            foreach (string s in substrings)
+            {
+                res.Add(s.Trim());
+            }
+
+            return res;
         }
     }
 }
