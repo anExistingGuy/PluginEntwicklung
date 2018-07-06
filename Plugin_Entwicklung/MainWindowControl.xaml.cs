@@ -98,11 +98,11 @@
                 string.Format(System.Globalization.CultureInfo.CurrentUICulture, "Invoked '{0}'", this.ToString()),
                 "MainWindow");
 
-            new Controller.LineLengthController().CheckLineLength(this.SelectedProject, int.Parse(this.textBox_lengthLines.Text));
-            new Controller.NamingController().CheckNaming(SelectedProject);
-            new Controller.ImportsUsedController().CheckImports(SelectedProject);
+            //new Controller.LineLengthController().CheckLineLength(this.SelectedProject, int.Parse(this.textBox_lengthLines.Text));
+            new Controller.NamingController().CheckNaming(SelectedProject,new List<string>() {"_"});
+            //new Controller.ImportsUsedController().CheckImports(SelectedProject);
             //new Controller.LineLengthController().CheckLineLength(this.SelectedProject, int.Parse(this.textBox_lengthLines.ToString()));
-            new Controller.SingletonController().CheckSingleton(SelectedProject, DocumentsSingleton);
+           // new Controller.SingletonController().CheckSingleton(SelectedProject, DocumentsSingleton);
         }
 
         private void RefreshWorkspace(object sender, RoutedEventArgs e)

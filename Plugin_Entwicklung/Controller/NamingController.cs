@@ -9,12 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
+using System.Text.RegularExpressions;
 
 namespace Plugin_Entwicklung.Controller
 {
     class NamingController
     {
-        public void CheckNaming(Project project)
+
+        public void CheckNaming(Project project,List<string> permittedmethodstrings)
         {
             foreach (var document in project.Documents)
             {
@@ -27,7 +29,7 @@ namespace Plugin_Entwicklung.Controller
 						if (true)
 						{
 							List<MethodDeclarationSyntax> list = tree.GetRoot().DescendantNodes().OfType<MethodDeclarationSyntax>().ToList();
-							methodnaming(list);
+							methodnaming(list, permittedmethodstrings);
 						}
 						if (true)
 						{
@@ -48,11 +50,25 @@ namespace Plugin_Entwicklung.Controller
             }
         }
 
-		public void methodnaming(List<MethodDeclarationSyntax> list)
+		public void methodnaming(List<MethodDeclarationSyntax> list, List<string> permittedmethodstrings)
 		{
 			list.ForEach(delegate (MethodDeclarationSyntax mds)
 			{
-				System.Diagnostics.Debug.WriteLine("Methodenname: " + mds.Identifier);
+
+				permittedmethodstrings.ForEach(delegate (string permittedstring)
+				{
+					string currentmethodname = mds.Identifier.ToString();
+					string regexmatchstring = currentmethodname.Replace(permittedstring, "");
+					if (!currentmethodname.Contains(permittedstring) && Regex.Matches(regexmatchstring, @"[a-zA-Z ]").Count == currentmethodname.Length)
+					{
+						
+					}
+					else
+					{
+						System.Diagnostics.Debug.WriteLine("Alarm: " + mds.Identifier);
+					}
+				});
+				System.Diagnostics.Debug.WriteLine("Methodenname: " + mds.Identifier.ToString());
 			});
 		}
 
