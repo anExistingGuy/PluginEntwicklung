@@ -18,12 +18,17 @@ namespace Plugin_Entwicklung.Controller
 			List<MethodDeclarationSyntax> methodDeclarationsinModel = null;
 			List<MethodDeclarationSyntax> methodDeclarationsinView = null;
 
+			List<PropertyDeclarationSyntax> propertyDeclarationsinModel = null;
+			List<PropertyDeclarationSyntax> propertyDeclarationsinView = null;
+
 			foreach (Document d in modeldocuments)
 			{
 				Task<SyntaxTree> t = d.GetSyntaxTreeAsync();
 				SyntaxTree tree = t.Result;
 				methodDeclarationsinModel =
 					tree.GetRoot().DescendantNodesAndSelf().OfType<MethodDeclarationSyntax>().ToList();
+				propertyDeclarationsinModel =
+					tree.GetRoot().DescendantNodesAndSelf().OfType<PropertyDeclarationSyntax>().ToList();
 			}
 
 			foreach (Document d in viewdocuments)
@@ -32,6 +37,8 @@ namespace Plugin_Entwicklung.Controller
 				SyntaxTree tree = t.Result;
 				methodDeclarationsinView =
 					tree.GetRoot().DescendantNodesAndSelf().OfType<MethodDeclarationSyntax>().ToList();
+				propertyDeclarationsinView =
+	                tree.GetRoot().DescendantNodesAndSelf().OfType<PropertyDeclarationSyntax>().ToList();
 			}
 
 			foreach (Document d in viewmodeldocuments)
@@ -41,12 +48,27 @@ namespace Plugin_Entwicklung.Controller
 				List<MethodDeclarationSyntax> methodDeclarationsinViewModel =
 					tree.GetRoot().DescendantNodesAndSelf().OfType<MethodDeclarationSyntax>().ToList();
 			}
-			ModelknowsViews(methodDeclarationsinModel, methodDeclarationsinView);
+			ModelknowsViews(methodDeclarationsinModel, methodDeclarationsinView, propertyDeclarationsinModel, propertyDeclarationsinView);
 			CheckCodeBehind(project);
 		}
 
-		public void ModelknowsViews(List<MethodDeclarationSyntax> modellist, List<MethodDeclarationSyntax> viewlist)
+		public void ModelknowsViews(List<MethodDeclarationSyntax> modellist, 
+			List<MethodDeclarationSyntax> viewlist, List<PropertyDeclarationSyntax> propertyDeclarationsinModel
+			, List<PropertyDeclarationSyntax> propertyDeclarationsinView)
 		{
+			viewlist.ForEach(delegate (MethodDeclarationSyntax mdsv)
+			{
+				string viewmethodname = mdsv.Identifier.ToString();
+				modellist.ForEach(delegate (MethodDeclarationSyntax mdsm)
+				{
+					string modelmethodname = mdsv.Identifier.ToString();
+					if (modelmethodname.Equals(viewmethodname))
+					{
+
+					}
+				});
+			});
+
 			viewlist.ForEach(delegate (MethodDeclarationSyntax mdsv)
 			{
 				string viewmethodname = mdsv.Identifier.ToString();

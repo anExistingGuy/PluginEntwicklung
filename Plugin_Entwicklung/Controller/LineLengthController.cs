@@ -12,14 +12,15 @@ namespace Plugin_Entwicklung.Controller
 {
     class LineLengthController
     {
-        // public void CheckLineLength(VisualStudioWorkspace workspace)
-        public void CheckLineLength(Project project, int numChars)
+		//The CheckLineLenght Method which is called from the MainWindowControl.xaml.cs when the assigned button is pressed
+		public void CheckLineLength(Project project, int numChars)
         {
             
             foreach (var document in project.Documents)
             {
                 if (document != null)
                 {
+					//convert the document to a text so every line can be accesed
                     SourceText doctext;
                     document.TryGetText(out doctext);
                     if (doctext != null)

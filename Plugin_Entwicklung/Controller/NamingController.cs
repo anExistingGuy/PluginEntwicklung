@@ -16,7 +16,7 @@ namespace Plugin_Entwicklung.Controller
 {
     class NamingController
     {
-
+		//The CheckNaming Method which is called from the MainWindowControl.xaml.cs when the assigned button is pressed
         public void CheckNaming(Project project,List<string> permittedmethodstrings,
 			List<string> permittedvariablestrings, List<string> permittedpropertystrings,
 			bool ismethodchecked, bool isvariablechecked, bool isclasschecked, bool ispropertychecked, bool isnamespacechecked)
@@ -25,6 +25,7 @@ namespace Plugin_Entwicklung.Controller
             {
                 if (document != null)
                 {
+					    //getting the Syntax Tree for the current Document
                         SyntaxTree tree;
                         Task<SyntaxTree> t = document.GetSyntaxTreeAsync();
                         tree = t.Result;
@@ -59,13 +60,14 @@ namespace Plugin_Entwicklung.Controller
             }
         }
 
+        //this method checks if the namingconventions for methods set by the user are met for all documents in the project
 		public void Methodnaming(List<MethodDeclarationSyntax> list, List<string> permittedmethodstrings)
 		{
 			list.ForEach(delegate (MethodDeclarationSyntax mds)
 			{
 				string currentmethodname = mds.Identifier.ToString();
 				string regexmatchstring = currentmethodname;
-				System.Diagnostics.Debug.WriteLine("Counter: " + permittedmethodstrings.Count());
+				//permitted special signs get treated like they are not part of the methodname 
 				if (permittedmethodstrings.Equals(""))
 				{
 					permittedmethodstrings.ForEach(delegate (string permittedstring)
@@ -73,6 +75,7 @@ namespace Plugin_Entwicklung.Controller
 						regexmatchstring = regexmatchstring.Replace(permittedstring, "");
 					});
 				}
+				//determin whether the method name only contains letters of the abc
 				if (Regex.Matches(regexmatchstring, @"[a-zA-Z ]").Count == regexmatchstring.Length)
 				{
 
@@ -84,12 +87,14 @@ namespace Plugin_Entwicklung.Controller
 			});
 		}
 
+		//this method checks if the namingconventions for variables set by the user are met for all documents in the project
 		public void Variablenaming(List<VariableDeclaratorSyntax> list, List<string> permittedvariablestrings)
 		{
 			list.ForEach(delegate (VariableDeclaratorSyntax vds)
 			{
 				string currentvariablename = vds.Identifier.ToString();
 				string regexmatchstring = currentvariablename;
+				//permitted special signs get treated like they are not part of the variablename 
 				if (permittedvariablestrings.Equals(""))
 				{
 					permittedvariablestrings.ForEach(delegate (string permittedstring)
@@ -97,23 +102,26 @@ namespace Plugin_Entwicklung.Controller
 						regexmatchstring = regexmatchstring.Replace(permittedstring, "");
 					});
 				}
-						if (Regex.Matches(regexmatchstring, @"[a-zA-Z ]").Count == regexmatchstring.Length)
-						{
+				//determin whether the variable name only contains letters of the abc
+				if (Regex.Matches(regexmatchstring, @"[a-zA-Z ]").Count == regexmatchstring.Length)
+				{
 
-						}
-						else
-						{
-							System.Diagnostics.Debug.WriteLine("Fehlerhafter Variablenname: " + vds.Identifier);
-						}
+				}
+				else
+				{
+					    System.Diagnostics.Debug.WriteLine("Fehlerhafter Variablenname: " + vds.Identifier);
+				}
 			});
 		}
 
+		//this method checks if the namingconventions for classes set by the user are met for all documents in the project
 		public void Classnaming(List<ClassDeclarationSyntax> list)
 		{
 			list.ForEach(delegate (ClassDeclarationSyntax cds)
 			{
 					string currentclassname = cds.Identifier.ToString();
-					if (char.IsUpper(currentclassname[0]) && Regex.Matches(currentclassname, @"[a-zA-Z ]").Count == currentclassname.Length)
+				    //determin whether the class name only contains letters of the abc and if the first letter is in uppercase
+				    if (char.IsUpper(currentclassname[0]) && Regex.Matches(currentclassname, @"[a-zA-Z ]").Count == currentclassname.Length)
 					{
 
 					}
@@ -124,12 +132,14 @@ namespace Plugin_Entwicklung.Controller
 			});
 		}
 
+		//this method checks if the namingconventions for propertys set by the user are met for all documents in the project
 		public void Propertynaming(List<PropertyDeclarationSyntax> list, List<string> permittedpropertystrings)
 		{
 			list.ForEach(delegate (PropertyDeclarationSyntax vds)
 			{
 				string currentvariablename = vds.Identifier.ToString();
 				string regexmatchstring = currentvariablename;
+				//permitted special signs get treated like they are not part of the propertyname
 				if (permittedpropertystrings.Equals(""))
 				{
 					permittedpropertystrings.ForEach(delegate (string permittedstring)
@@ -137,17 +147,19 @@ namespace Plugin_Entwicklung.Controller
 						regexmatchstring = regexmatchstring.Replace(permittedstring, "");
 					});
 				}
-						if (Regex.Matches(regexmatchstring, @"[a-zA-Z ]").Count == regexmatchstring.Length)
-						{
+				//determin whether the property name only contains letters of the abc
+				if (Regex.Matches(regexmatchstring, @"[a-zA-Z ]").Count == regexmatchstring.Length)
+				{
 
-						}
-						else
-						{
-							System.Diagnostics.Debug.WriteLine("Fehlerhafter Propertyname: " + vds.Identifier);
-						}
+				}
+				else
+				{
+						System.Diagnostics.Debug.WriteLine("Fehlerhafter Propertyname: " + vds.Identifier);
+				}
 			});
 		}
 
+		//this method checks if the namingconventions for namespaces set by the user are met for all documents in the project
 		public void Namespacenaming(List<NamespaceDeclarationSyntax> list, String projekt, List<string> folders)
 		{
 			String desirednamespace=projekt;
