@@ -21,42 +21,58 @@ namespace Plugin_Entwicklung.Controller
 			List<ObjectCreationExpressionSyntax> idDeclarationsinModel = null;
 			List<ObjectCreationExpressionSyntax> idDeclarationsinView = null;
 
+            List<Tuple<ObjectCreationExpressionSyntax, Document>> idDeclarationsModel = new List<Tuple<ObjectCreationExpressionSyntax, Document>>();
+            List<Tuple<ObjectCreationExpressionSyntax, Document>> idDeclarationsView = new List<Tuple<ObjectCreationExpressionSyntax, Document>>();
+
 			foreach (Document d in modeldocuments)
 			{
 				Task<SyntaxTree> t = d.GetSyntaxTreeAsync();
 				SyntaxTree tree = t.Result;
+
+
 				classDeclarationsinModel =
 					tree.GetRoot().DescendantNodesAndSelf().OfType<ClassDeclarationSyntax>().ToList();
 				idDeclarationsinModel =
 	                tree.GetRoot().DescendantNodesAndSelf().OfType<ObjectCreationExpressionSyntax>().ToList();
+
+                foreach (ObjectCreationExpressionSyntax oces in idDeclarationsinModel)
+                {
+                    idDeclarationsModel.Add(new Tuple<ObjectCreationExpressionSyntax, Document>(oces, d));
+                }
 			}
 
 			foreach (Document d in viewdocuments)
 			{
 				Task<SyntaxTree> t = d.GetSyntaxTreeAsync();
 				SyntaxTree tree = t.Result;
+
 				classDeclarationsinView =
 					tree.GetRoot().DescendantNodesAndSelf().OfType<ClassDeclarationSyntax>().ToList();
 				idDeclarationsinView =
 					tree.GetRoot().DescendantNodesAndSelf().OfType<ObjectCreationExpressionSyntax>().ToList();
+
+                foreach (ObjectCreationExpressionSyntax oces in idDeclarationsinView)
+                {
+                    idDeclarationsView.Add(new Tuple<ObjectCreationExpressionSyntax, Document>(oces, d));
+                }
 			}
 
-			ModelknowsViews(classDeclarationsinModel, classDeclarationsinView, idDeclarationsinModel, idDeclarationsinView);
+			ModelknowsViews(classDeclarationsinModel, classDeclarationsinView, idDeclarationsModel, idDeclarationsView);
 			CheckCodeBehind(project);
 		}
 
 		public void ModelknowsViews(List<ClassDeclarationSyntax> classmodellist, List<ClassDeclarationSyntax> classviewlist,
-			List<ObjectCreationExpressionSyntax> idmodellist, List<ObjectCreationExpressionSyntax> idviewlist)
+			List<Tuple<ObjectCreationExpressionSyntax, Document>> idmodellist, List<Tuple<ObjectCreationExpressionSyntax, Document>> idviewlist)
 		{
 			classmodellist.ForEach(delegate (ClassDeclarationSyntax cdsm)
 			{
 				string modelclassname = cdsm.Identifier.ToString();
-				idviewlist.ForEach(delegate (ObjectCreationExpressionSyntax oces)
+				idviewlist.ForEach(delegate (Tuple<ObjectCreationExpressionSyntax, Document> tuple)
 				{
-					string createdobject = oces.ToString();
+					string createdobject = tuple.Item1.ToString();
 					if (createdobject.Contains(modelclassname))
 					{
-						System.Diagnostics.Debug.WriteLine("Model sollte das View nicht kennen");
+                        ErrorReporter.AddWarning("Model accessing View!", tuple.Item2.FilePath);
 					}
 				});
 			});
@@ -64,12 +80,12 @@ namespace Plugin_Entwicklung.Controller
 			classviewlist.ForEach(delegate (ClassDeclarationSyntax cdsv)
 			{
 				string viewclassname = cdsv.Identifier.ToString();
-				idmodellist.ForEach(delegate (ObjectCreationExpressionSyntax oces)
+				idmodellist.ForEach(delegate (Tuple<ObjectCreationExpressionSyntax, Document> tuple)
 				{
-					string createdobject = oces.ToString();
+					string createdobject = tuple.Item1.ToString();
 					if (createdobject.Contains(viewclassname))
 					{
-						System.Diagnostics.Debug.WriteLine("View sollte das Model nicht kennen");
+                        ErrorReporter.AddWarning("View accessing model!", tuple.Item2.FilePath);
 					}
 				});
 			});
@@ -97,6 +113,7 @@ namespace Plugin_Entwicklung.Controller
 						if (fldr.Contains(".xaml")&& (methodDeclarations.Any()||variableDeclarations.Any()||propertyDeclarations.Any()))
 						{
 							System.Diagnostics.Debug.WriteLine("Codebehind sollte Leer sein");
+                            ErrorReporter.AddWarning("Codebehind is not empty!", document.FilePath);
 						}
 
 					});

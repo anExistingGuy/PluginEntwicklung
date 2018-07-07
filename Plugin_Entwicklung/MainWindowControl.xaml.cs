@@ -58,6 +58,8 @@
                         }
                     }
 
+                    AllDocuments = documentsFiltered;
+
                     foreach (Document d in documentsFiltered)
                     {
                         DocumentsUnassigned.Add(d);
@@ -66,6 +68,8 @@
                 }
             }
         }
+        public List<Document> AllDocuments { get; set; }
+
         public ObservableCollection<Document> DocumentsUnassigned { get; set; }
         public ObservableCollection<Document> DocumentsModel { get; set; }
         public ObservableCollection<Document> DocumentsView { get; set; }
@@ -120,88 +124,57 @@
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Default event handler naming pattern")]
         private void CheckProject(object sender, RoutedEventArgs e)
         {
-            #region errorTest
-            // Test für errors
-            /*
-            Document testDoc = null;
-            foreach (Document d in DocumentsUnassigned)
-            {
-                if (d.Name == "MainWindowControl.xaml.cs")
-                {
-                    testDoc = d;
-                }
-            }
-
-            var ivsSolution = (IVsSolution)Package.GetGlobalService(typeof(IVsSolution));
-            IVsHierarchy hierarchyItem;
-            ivsSolution.GetProjectOfUniqueName("Plugin_Entwicklung", out hierarchyItem);
-
-            ErrorTask testError = new ErrorTask()
-            {
-                ErrorCategory = TaskErrorCategory.Error,
-                Category = TaskCategory.BuildCompile,
-                Text = "This is a test error for testing purposes.",
-                Document = testDoc.FilePath,
-                Line = 2,
-                Column = 6,
-                HierarchyItem = hierarchyItem
-            };
-
-
-            ServiceProvider serviceProvider = new ServiceProvider(Application.Current as IServiceProvider);
-            ErrorListProvider errorListProvider = new ErrorListProvider(serviceProvider);
-            errorListProvider.ProviderName = "custom errors";
-            errorListProvider.ProviderGuid = new System.Guid("xxxxxxxxx");
-            testError.Navigate += (src, args) =>
-            {
-                //there are two Bugs in the errorListProvider.Navigate method:
-                //    Line number needs adjusting
-                //    Column is not shown
-                testError.Line++;
-                errorListProvider.Navigate(testError, new System.Guid(EnvDTE.Constants.vsViewKindCode));
-                testError.Line--;
-            };
-
-            errorListProvider.Tasks.Clear();    // clear previously created
-            errorListProvider.Tasks.Add(testError);  // add item
-            errorListProvider.Show();       // make sure it is visible
-            */
-            #endregion errorTest
-
-            /*
-            Document testDoc = null;
-            foreach (Document d in DocumentsUnassigned)
-            {
-                if (d.Name == "MainWindowControl.xaml.cs")
-                {
-                    testDoc = d;
-                }
-            }
-
-            ErrorReporter.AddWarning("Testeroni");
-            ErrorReporter.AddWarning("TestLine 52", 52, testDoc.FilePath);
-            */
-
-            MessageBox.Show(
-                string.Format(System.Globalization.CultureInfo.CurrentUICulture, "Invoked '{0}'", this.ToString()),
-                "MainWindow");
-
             if ((bool)checkBox_LineLength.IsChecked)
             {
-                new Controller.LineLengthController().CheckLineLength(this.SelectedProject, int.Parse(this.textBox_lengthLines.Text));
+                new Controller.LineLengthController().CheckLineLength(AllDocuments, int.Parse(textBox_lengthLines.Text));
             }
 
             if ((bool)checkBox_Naming.IsChecked)
             {
                 // SplitString() für erlaubte Sonderzeichen, if-stmnts für einzelne Namings (Variablen, Properties, etc)
-                List<string> permittedCharsMethods;
-                permittedCharsMethods = SplitString(textBox_specialCharsMethods.Text);
-                new Controller.NamingController().CheckNaming(SelectedProject, permittedCharsMethods);
+                bool checkMethods = (bool)checkBox_methods.IsChecked;
+                List<string> permittedStringsMethods = 
+                    SplitString(textBox_specialCharsMethods.Text);
+
+                bool checkVariables = (bool)checkBox_variables.IsChecked;
+                List<string> permittedStringsVariables =
+                    SplitString(textBox_specialCharsVariables.Text);
+
+                bool checkProperties = (bool)checkBox_properties.IsChecked;
+                List<string> permittedStringsProperties =
+                    SplitString(textBox_specialCharsProperties.Text);
+
+                bool checkClasses = (bool)checkBox_classes.IsChecked;
+                bool checkNamespaces = (bool)checkBox_namespaces.IsChecked;
+
+                new Controller.NamingController().CheckNaming
+                    (
+                    documents:AllDocuments,
+                    permittedmethodstrings:permittedStringsMethods,
+                    permittedvariablestrings:permittedStringsVariables,
+                    permittedpropertystrings:permittedStringsProperties,
+                    ismethodchecked:checkMethods,
+                    isvariablechecked:checkVariables,
+                    ispropertychecked:checkProperties,
+                    isclasschecked:checkClasses,
+                    isnamespacechecked:checkNamespaces
+                    );
             }
 
             if ((bool)checkBox_imports.IsChecked)
             {
-                new Controller.ImportsUsedController().CheckImports(SelectedProject);
+                new Controller.ImportsUsedController().CheckImports(AllDocuments);
+            }
+
+            if ((bool)checkBox_MVVM.IsChecked)
+            {
+                new Controller.MVVMConntroller().CheckMVVM
+                    (
+                    project:selectedProject,
+                    modeldocuments:DocumentsModel,
+                    viewdocuments:DocumentsView,
+                    viewmodeldocuments:DocumentsViewModel
+                    );
             }
             
             if ((bool)checkBox_Singleton.IsChecked)

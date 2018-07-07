@@ -13,10 +13,10 @@ namespace Plugin_Entwicklung.Controller
     class LineLengthController
     {
 		//The CheckLineLenght Method which is called from the MainWindowControl.xaml.cs when the assigned button is pressed
-		public void CheckLineLength(Project project, int numChars)
+		public void CheckLineLength(List<Document> documents, int numChars)
         {
             
-            foreach (var document in project.Documents)
+            foreach (var document in documents)
             {
                 if (document != null)
                 {
@@ -29,7 +29,7 @@ namespace Plugin_Entwicklung.Controller
                         {
                             if (line.ToString().Length > numChars)
                             {
-                                System.Diagnostics.Debug.WriteLine(document.Name + "Zu lang in Zeile" + line.LineNumber + 1);
+                                ErrorReporter.AddWarning("Line " + (line.LineNumber + 1) + " in Document " + document.Name + " is too long!", document.FilePath, line.LineNumber);
                             }
                         }
                     }

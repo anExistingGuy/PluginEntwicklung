@@ -15,10 +15,10 @@ namespace Plugin_Entwicklung.Controller
 	class ImportsUsedController
 	{
 
-		public void CheckImports(Project project)
+		public void CheckImports(List<Document> documents)
 		{
 			List<Document> listdoc = null;
-			foreach (var document in project.Documents)
+			foreach (var document in documents)
 			{
 				if (document != null)
 				{
@@ -36,9 +36,8 @@ namespace Plugin_Entwicklung.Controller
 						.ToList();
 					unusedImportNodes.ForEach(delegate (SyntaxNode nd)
 					{
-						System.Diagnostics.Debug.WriteLine("Methodenname: " + nd.ToString());
+                        ErrorReporter.AddWarning("Unused import : " + nd.ToString(), document.FilePath);
 					});
-					System.Diagnostics.Debug.WriteLine("Hallo ImportsUsed"+ unusedImportNodes);
 				//	listdoc.Add(document.WithSyntaxRoot(
 				//		root.RemoveNodes(unusedImportNodes, SyntaxRemoveOptions.KeepNoTrivia)));
 				}

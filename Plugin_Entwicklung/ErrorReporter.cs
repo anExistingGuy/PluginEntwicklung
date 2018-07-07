@@ -26,7 +26,7 @@ namespace Plugin_Entwicklung
             AddTask(message, TaskErrorCategory.Error);
         }
 
-        public static void AddError(string message, int line, string documentPath)
+        public static void AddError(string message, string documentPath, int line = 0)
         {
             AddTask(message, line, documentPath, TaskErrorCategory.Error);
         }
@@ -36,7 +36,7 @@ namespace Plugin_Entwicklung
             AddTask(message, TaskErrorCategory.Warning);
         }
 
-        public static void AddWarning(string message, int line, string documentPath)
+        public static void AddWarning(string message, string documentPath, int line = 0)
         {
             AddTask(message, line, documentPath, TaskErrorCategory.Warning);
         }
