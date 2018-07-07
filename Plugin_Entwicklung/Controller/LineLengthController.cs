@@ -15,8 +15,6 @@ namespace Plugin_Entwicklung.Controller
         // public void CheckLineLength(VisualStudioWorkspace workspace)
         public void CheckLineLength(Project project, int numChars)
         {
-            IComponentModel componentModel = (IComponentModel)Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(SComponentModel));
-            var workspace = componentModel.GetService<Microsoft.VisualStudio.LanguageServices.VisualStudioWorkspace>();
             
             foreach (var document in project.Documents)
             {
