@@ -15,69 +15,61 @@ namespace Plugin_Entwicklung.Controller
 	{
 		public void CheckMVVM(Project project, ObservableCollection<Document> modeldocuments, ObservableCollection<Document> viewdocuments, ObservableCollection<Document> viewmodeldocuments)
 		{
-			List<MethodDeclarationSyntax> methodDeclarationsinModel = null;
-			List<MethodDeclarationSyntax> methodDeclarationsinView = null;
+			List<ClassDeclarationSyntax> classDeclarationsinModel = null;
+			List<ClassDeclarationSyntax> classDeclarationsinView = null;
 
-			List<PropertyDeclarationSyntax> propertyDeclarationsinModel = null;
-			List<PropertyDeclarationSyntax> propertyDeclarationsinView = null;
+			List<ObjectCreationExpressionSyntax> idDeclarationsinModel = null;
+			List<ObjectCreationExpressionSyntax> idDeclarationsinView = null;
 
 			foreach (Document d in modeldocuments)
 			{
 				Task<SyntaxTree> t = d.GetSyntaxTreeAsync();
 				SyntaxTree tree = t.Result;
-				methodDeclarationsinModel =
-					tree.GetRoot().DescendantNodesAndSelf().OfType<MethodDeclarationSyntax>().ToList();
-				propertyDeclarationsinModel =
-					tree.GetRoot().DescendantNodesAndSelf().OfType<PropertyDeclarationSyntax>().ToList();
+				classDeclarationsinModel =
+					tree.GetRoot().DescendantNodesAndSelf().OfType<ClassDeclarationSyntax>().ToList();
+				idDeclarationsinModel =
+	                tree.GetRoot().DescendantNodesAndSelf().OfType<ObjectCreationExpressionSyntax>().ToList();
 			}
 
 			foreach (Document d in viewdocuments)
 			{
 				Task<SyntaxTree> t = d.GetSyntaxTreeAsync();
 				SyntaxTree tree = t.Result;
-				methodDeclarationsinView =
-					tree.GetRoot().DescendantNodesAndSelf().OfType<MethodDeclarationSyntax>().ToList();
-				propertyDeclarationsinView =
-	                tree.GetRoot().DescendantNodesAndSelf().OfType<PropertyDeclarationSyntax>().ToList();
+				classDeclarationsinView =
+					tree.GetRoot().DescendantNodesAndSelf().OfType<ClassDeclarationSyntax>().ToList();
+				idDeclarationsinView =
+					tree.GetRoot().DescendantNodesAndSelf().OfType<ObjectCreationExpressionSyntax>().ToList();
 			}
 
-			foreach (Document d in viewmodeldocuments)
-			{
-				Task<SyntaxTree> t = d.GetSyntaxTreeAsync();
-				SyntaxTree tree = t.Result;
-				List<MethodDeclarationSyntax> methodDeclarationsinViewModel =
-					tree.GetRoot().DescendantNodesAndSelf().OfType<MethodDeclarationSyntax>().ToList();
-			}
-			ModelknowsViews(methodDeclarationsinModel, methodDeclarationsinView, propertyDeclarationsinModel, propertyDeclarationsinView);
+			ModelknowsViews(classDeclarationsinModel, classDeclarationsinView, idDeclarationsinModel, idDeclarationsinView);
 			CheckCodeBehind(project);
 		}
 
-		public void ModelknowsViews(List<MethodDeclarationSyntax> modellist, 
-			List<MethodDeclarationSyntax> viewlist, List<PropertyDeclarationSyntax> propertyDeclarationsinModel
-			, List<PropertyDeclarationSyntax> propertyDeclarationsinView)
+		public void ModelknowsViews(List<ClassDeclarationSyntax> classmodellist, List<ClassDeclarationSyntax> classviewlist,
+			List<ObjectCreationExpressionSyntax> idmodellist, List<ObjectCreationExpressionSyntax> idviewlist)
 		{
-			viewlist.ForEach(delegate (MethodDeclarationSyntax mdsv)
+			classmodellist.ForEach(delegate (ClassDeclarationSyntax cdsm)
 			{
-				string viewmethodname = mdsv.Identifier.ToString();
-				modellist.ForEach(delegate (MethodDeclarationSyntax mdsm)
+				string modelclassname = cdsm.Identifier.ToString();
+				idviewlist.ForEach(delegate (ObjectCreationExpressionSyntax oces)
 				{
-					string modelmethodname = mdsv.Identifier.ToString();
-					if (modelmethodname.Equals(viewmethodname))
+					string createdobject = oces.ToString();
+					if (createdobject.Contains(modelclassname))
 					{
-
+						System.Diagnostics.Debug.WriteLine("Model sollte das View nicht kennen");
 					}
 				});
 			});
 
-			viewlist.ForEach(delegate (MethodDeclarationSyntax mdsv)
+			classviewlist.ForEach(delegate (ClassDeclarationSyntax cdsv)
 			{
-				string viewmethodname = mdsv.Identifier.ToString();
-				modellist.ForEach(delegate (MethodDeclarationSyntax mdsm)
+				string viewclassname = cdsv.Identifier.ToString();
+				idmodellist.ForEach(delegate (ObjectCreationExpressionSyntax oces)
 				{
-					string modelmethodname = mdsv.Identifier.ToString();
-					if (modelmethodname.Equals(viewmethodname))
+					string createdobject = oces.ToString();
+					if (createdobject.Contains(viewclassname))
 					{
-
+						System.Diagnostics.Debug.WriteLine("View sollte das Model nicht kennen");
 					}
 				});
 			});

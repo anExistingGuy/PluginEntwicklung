@@ -25,7 +25,7 @@ namespace Plugin_Entwicklung.Controller
             {
                 if (document != null)
                 {
-					    //getting the Syntax Tree for the current Document
+					    //getting the Syntax Tree for the current document
                         SyntaxTree tree;
                         Task<SyntaxTree> t = document.GetSyntaxTreeAsync();
                         tree = t.Result;
