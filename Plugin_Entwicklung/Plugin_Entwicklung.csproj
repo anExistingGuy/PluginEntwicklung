@@ -59,6 +59,7 @@
     <Compile Include="Controller\MVVMController.cs" />
     <Compile Include="Controller\NamingController.cs" />
     <Compile Include="Controller\SingletonController.cs" />
+    <Compile Include="ErrorReporter.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="MainWindowCommand.cs" />
     <Compile Include="MainWindowControl.xaml.cs">

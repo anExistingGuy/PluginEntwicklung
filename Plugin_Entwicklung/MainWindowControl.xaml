@@ -144,7 +144,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Not Singleton" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-						<ListBox Name="listBox_NonSingleton" HorizontalAlignment="Stretch" Padding="5" Grid.Row="1"
+						<ListBox Name="listBox_NonSingleton" HorizontalAlignment="Stretch" Padding="5" Grid.Row="1" 
 								 ItemsSource="{Binding Path=DocumentsNonSingleton, Mode=TwoWay}" DisplayMemberPath="Name"
 								 GotFocus="ShiftFocus">
 						</ListBox>
@@ -246,7 +246,7 @@
 					<TextBox Name="textBox_specialCharsProperties" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
 
 					<!-- Methods -->
-					<TextBlock TextWrapping="Wrap" Text="Properties" FontWeight="Bold" Grid.Column="0" Grid.Row="8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+					<TextBlock TextWrapping="Wrap" Text="Methoden" FontWeight="Bold" Grid.Column="0" Grid.Row="8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 					<CheckBox Name="checkBox_methods" Grid.Column="1" Grid.Row="8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 					
 					<TextBlock TextWrapping="Wrap" Text="Case" Grid.Column="0" Grid.Row="9" HorizontalAlignment="Center" VerticalAlignment="Center"/>

@@ -76,6 +76,7 @@ namespace Plugin_Entwicklung
         public static void Initialize(Package package)
         {
             Instance = new MainWindowCommand(package);
+            ErrorReporter.Initialize(package as IServiceProvider);
         }
 
         /// <summary>
