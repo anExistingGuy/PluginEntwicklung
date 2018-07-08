@@ -7,11 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Plugin_Entwicklung
+namespace PatterNicer
 {
     static class ErrorReporter
     {
         // https://softwareproduction.eu/2013/05/30/write-to-visual-studios-error-list/
+
         private static ErrorListProvider errorListProvider;
         private static List<ErrorTask> errors;
 
@@ -21,26 +22,47 @@ namespace Plugin_Entwicklung
             errors = new List<ErrorTask>();
         }
 
+        // Method to add an error to VS error list supplying only the message
         public static void AddError(string message)
         {
             AddTask(message, TaskErrorCategory.Error);
         }
 
-        public static void AddError(string message, string documentPath, int line = 0)
+        /* Method to add an error to VS error list 
+         * supplying message, docPath and startline 
+         */
+        public static void AddError
+            (
+            string message, 
+            string documentPath, 
+            int line = 0
+            )
         {
             AddTask(message, line, documentPath, TaskErrorCategory.Error);
         }
 
+        /* Method to add a warning to 
+         * VS warning list supplying only the message 
+         */
         public static void AddWarning(string message)
         {
             AddTask(message, TaskErrorCategory.Warning);
         }
 
-        public static void AddWarning(string message, string documentPath, int line = 0)
+        /* Method to add a warning to VS warning list 
+         * supplying message, docPath and startline 
+         */
+        public static void AddWarning
+            (
+            string message, 
+            string documentPath, 
+            int line = 0
+            )
         {
             AddTask(message, line, documentPath, TaskErrorCategory.Warning);
         }
 
+        // Method to clear all errors created by this class
         public static void ClearErrors()
         {
             foreach (ErrorTask error in errors)
@@ -49,7 +71,14 @@ namespace Plugin_Entwicklung
             }
         }
 
-        private static void AddTask(string message, TaskErrorCategory errorCategory)
+        /* General method for adding tasks to the errorListProvider 
+         * provided only the message and the errorCategory 
+         */
+        private static void AddTask
+            (
+            string message, 
+            TaskErrorCategory errorCategory
+            )
         {
             ErrorTask newTask = new ErrorTask
             {
@@ -63,7 +92,16 @@ namespace Plugin_Entwicklung
             errors.Add(newTask);
         }
 
-        private static void AddTask(string message, int line, string documentPath, TaskErrorCategory errorCategory)
+        /* General method for adding tasks to the errorListProvider 
+         * provided the message, startline, docPath and errorCategory 
+         */
+        private static void AddTask
+            (
+            string message, 
+            int line, 
+            string documentPath, 
+            TaskErrorCategory errorCategory
+            )
         {
             ErrorTask newTask = new ErrorTask
             {

@@ -1,4 +1,4 @@
-﻿namespace Plugin_Entwicklung
+﻿namespace PatterNicer
 {
     using System;
     using System.Runtime.InteropServices;

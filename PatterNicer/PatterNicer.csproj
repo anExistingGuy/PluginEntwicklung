@@ -23,8 +23,8 @@
     <ProjectGuid>{87BECB93-1721-4D12-B243-E4A98E3E2D47}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Plugin_Entwicklung</RootNamespace>
-    <AssemblyName>Plugin_Entwicklung</AssemblyName>
+    <RootNamespace>PatterNicer</RootNamespace>
+    <AssemblyName>PatterNicer</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
