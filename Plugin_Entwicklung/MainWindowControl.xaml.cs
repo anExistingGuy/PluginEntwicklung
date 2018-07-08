@@ -23,6 +23,12 @@
         // List<Project> Projects { get; set; }
         // public Package Package { get; set; }
 
+        public enum NameCase
+        {
+            camelCase = 0,
+            PascalCase = 1
+        }
+
         private Project selectedProject;
         public ObservableCollection<Project> Projects { get; set; }
         public Project SelectedProject

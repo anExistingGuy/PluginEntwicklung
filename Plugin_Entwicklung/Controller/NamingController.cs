@@ -16,6 +16,7 @@ namespace Plugin_Entwicklung.Controller
 {
     class NamingController
     {
+
         //The CheckNaming Method which is called from the MainWindowControl.xaml.cs when the assigned button is pressed
         public void CheckNaming(List<Document> documents, List<string> permittedmethodstrings,
             List<string> permittedvariablestrings, List<string> permittedpropertystrings,

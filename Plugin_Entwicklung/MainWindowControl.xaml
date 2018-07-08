@@ -224,7 +224,7 @@
 					<CheckBox Name="checkBox_variables" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 					
 					<TextBlock TextWrapping="Wrap" Text="Case" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-					<ComboBox Name="comboBox_caseVariables" Grid.Column="1" Grid.Row="1">
+					<ComboBox Name="comboBox_caseVariables" Grid.Column="1" Grid.Row="1" SelectedIndex="1">
 						<ComboBoxItem Name="caseVariables_pascalCase" Content="PascalCase"/>
 						<ComboBoxItem Name="caseVariables_camelCase" Content="camelCase"/>
 					</ComboBox>
@@ -237,7 +237,7 @@
 					<CheckBox Name="checkBox_properties" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 					
 					<TextBlock TextWrapping="Wrap" Text="Case" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-					<ComboBox Name="comboBox_caseProperties" Grid.Column="1" Grid.Row="5">
+					<ComboBox Name="comboBox_caseProperties" Grid.Column="1" Grid.Row="5" SelectedIndex="0">
 						<ComboBoxItem Name="caseProperties_pascalCase" Content="PascalCase"/>
 						<ComboBoxItem Name="caseProperties_camelCase" Content="camelCase"/>
 					</ComboBox>
@@ -250,7 +250,7 @@
 					<CheckBox Name="checkBox_methods" Grid.Column="1" Grid.Row="8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 					
 					<TextBlock TextWrapping="Wrap" Text="Case" Grid.Column="0" Grid.Row="9" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-					<ComboBox Name="comboBox_caseMethods" Grid.Column="1" Grid.Row="9">
+					<ComboBox Name="comboBox_caseMethods" Grid.Column="1" Grid.Row="9" SelectedIndex="0">
 						<ComboBoxItem Name="caseMethods_pascalCase" Content="PascalCase"/>
 						<ComboBoxItem Name="caseMethods_camelCase" Content="camelCase"/>
 					</ComboBox>
