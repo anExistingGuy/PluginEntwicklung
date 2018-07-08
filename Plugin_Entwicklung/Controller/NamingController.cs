@@ -20,7 +20,8 @@ namespace Plugin_Entwicklung.Controller
         //The CheckNaming Method which is called from the MainWindowControl.xaml.cs when the assigned button is pressed
         public void CheckNaming(List<Document> documents, List<string> permittedmethodstrings,
             List<string> permittedvariablestrings, List<string> permittedpropertystrings,
-            bool ismethodchecked, bool isvariablechecked, bool isclasschecked, bool ispropertychecked, bool isnamespacechecked)
+            bool ismethodchecked, bool isvariablechecked, bool isclasschecked, bool ispropertychecked, bool isnamespacechecked
+			,MainWindowControl.NameCase nameCaseMethod, MainWindowControl.NameCase nameCaseVariable, MainWindowControl.NameCase nameCaseProperty)
         {
             foreach (var document in documents)
             {
@@ -33,12 +34,12 @@ namespace Plugin_Entwicklung.Controller
                     if (ismethodchecked)
                     {
                         List<MethodDeclarationSyntax> list = tree.GetRoot().DescendantNodes().OfType<MethodDeclarationSyntax>().ToList();
-                        Methodnaming(list, permittedmethodstrings, document);
+                        Methodnaming(list, permittedmethodstrings, document, nameCaseMethod);
                     }
                     if (isvariablechecked)
                     {
                         List<VariableDeclaratorSyntax> list = tree.GetRoot().DescendantNodes().OfType<VariableDeclaratorSyntax>().ToList();
-                        Variablenaming(list, permittedvariablestrings, document);
+                        Variablenaming(list, permittedvariablestrings, document, nameCaseVariable);
                     }
                     if (isclasschecked)
                     {
@@ -48,7 +49,7 @@ namespace Plugin_Entwicklung.Controller
                     if (ispropertychecked)
                     {
                         List<PropertyDeclarationSyntax> list = tree.GetRoot().DescendantNodes().OfType<PropertyDeclarationSyntax>().ToList();
-                        Propertynaming(list, permittedpropertystrings, document);
+                        Propertynaming(list, permittedpropertystrings, document, nameCaseProperty);
                     }
                     if (isnamespacechecked)
                     {
@@ -62,7 +63,8 @@ namespace Plugin_Entwicklung.Controller
         }
 
         //this method checks if the namingconventions for methods set by the user are met for all documents in the project
-        public void Methodnaming(List<MethodDeclarationSyntax> list, List<string> permittedmethodstrings, Document document)
+        public void Methodnaming(List<MethodDeclarationSyntax> list, List<string> permittedmethodstrings,
+			Document document, MainWindowControl.NameCase nameCaseMethod)
         {
             list.ForEach(delegate (MethodDeclarationSyntax mds)
             {
@@ -79,8 +81,15 @@ namespace Plugin_Entwicklung.Controller
                 //determin whether the method name only contains letters of the abc
                 if (Regex.Matches(regexmatchstring, @"[a-zA-Z ]").Count == regexmatchstring.Length)
                 {
-
-                }
+					if (char.IsUpper(regexmatchstring[0])&& nameCaseMethod.Equals(MainWindowControl.NameCase.camelCase))
+					{
+						ErrorReporter.AddWarning("Flawed method name : " + mds.Identifier, document.FilePath);
+					}
+					if (char.IsLower(regexmatchstring[0]) && nameCaseMethod.Equals(MainWindowControl.NameCase.PascalCase))
+					{
+						ErrorReporter.AddWarning("Flawed method name : " + mds.Identifier, document.FilePath);
+					}
+				}
                 else
                 {
                     ErrorReporter.AddWarning("Flawed method name : " + mds.Identifier, document.FilePath);
@@ -89,7 +98,8 @@ namespace Plugin_Entwicklung.Controller
         }
 
         //this method checks if the namingconventions for variables set by the user are met for all documents in the project
-        public void Variablenaming(List<VariableDeclaratorSyntax> list, List<string> permittedvariablestrings, Document document)
+        public void Variablenaming(List<VariableDeclaratorSyntax> list, List<string> permittedvariablestrings, 
+			Document document, MainWindowControl.NameCase nameCaseVariable)
         {
             list.ForEach(delegate (VariableDeclaratorSyntax vds)
             {
@@ -106,11 +116,18 @@ namespace Plugin_Entwicklung.Controller
                 //determin whether the variable name only contains letters of the abc
                 if (Regex.Matches(regexmatchstring, @"[a-zA-Z ]").Count == regexmatchstring.Length)
                 {
-
-                }
+					if (char.IsUpper(regexmatchstring[0]) && nameCaseVariable.Equals(MainWindowControl.NameCase.camelCase))
+					{
+						ErrorReporter.AddWarning("Flawed method name : " + vds.Identifier, document.FilePath);
+					}
+					if (char.IsLower(regexmatchstring[0]) && nameCaseVariable.Equals(MainWindowControl.NameCase.PascalCase))
+					{
+						ErrorReporter.AddWarning("Flawed method name : " + vds.Identifier, document.FilePath);
+					}
+				}
                 else
                 {
-                    ErrorReporter.AddWarning("Flawed mariable name : " + vds.Identifier, document.FilePath);
+                    ErrorReporter.AddWarning("Flawed variable name : " + vds.Identifier, document.FilePath);
                 }
             });
         }
@@ -134,11 +151,12 @@ namespace Plugin_Entwicklung.Controller
         }
 
         //this method checks if the namingconventions for propertys set by the user are met for all documents in the project
-        public void Propertynaming(List<PropertyDeclarationSyntax> list, List<string> permittedpropertystrings, Document document)
+        public void Propertynaming(List<PropertyDeclarationSyntax> list, List<string> permittedpropertystrings,
+			Document document, MainWindowControl.NameCase nameCaseProperty)
         {
-            list.ForEach(delegate (PropertyDeclarationSyntax vds)
+            list.ForEach(delegate (PropertyDeclarationSyntax pds)
             {
-                string currentvariablename = vds.Identifier.ToString();
+                string currentvariablename = pds.Identifier.ToString();
                 string regexmatchstring = currentvariablename;
                 //permitted special signs get treated like they are not part of the propertyname
                 if (permittedpropertystrings.Equals(""))
@@ -151,11 +169,18 @@ namespace Plugin_Entwicklung.Controller
                 //determin whether the property name only contains letters of the abc
                 if (Regex.Matches(regexmatchstring, @"[a-zA-Z ]").Count == regexmatchstring.Length)
                 {
-
-                }
+					if (char.IsUpper(regexmatchstring[0]) && nameCaseProperty.Equals(MainWindowControl.NameCase.camelCase))
+					{
+						ErrorReporter.AddWarning("Flawed method name : " + pds.Identifier, document.FilePath);
+					}
+					if (char.IsLower(regexmatchstring[0]) && nameCaseProperty.Equals(MainWindowControl.NameCase.PascalCase))
+					{
+						ErrorReporter.AddWarning("Flawed method name : " + pds.Identifier, document.FilePath);
+					}
+				}
                 else
                 {
-                    ErrorReporter.AddWarning("Flawed property name : " + vds.Identifier, document.FilePath);
+                    ErrorReporter.AddWarning("Flawed property name : " + pds.Identifier, document.FilePath);
                 }
             });
         }
