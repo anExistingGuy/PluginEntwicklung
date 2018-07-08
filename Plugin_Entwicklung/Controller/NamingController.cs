@@ -1,14 +1,9 @@
 ﻿using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Text;
-using Microsoft.VisualStudio.ComponentModelHost;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using System.Text.RegularExpressions;
 
 
@@ -81,10 +76,12 @@ namespace Plugin_Entwicklung.Controller
                 //determin whether the method name only contains letters of the abc
                 if (Regex.Matches(regexmatchstring, @"[a-zA-Z ]").Count == regexmatchstring.Length)
                 {
+					//check if camelCase constraint is violatet
 					if (char.IsUpper(regexmatchstring[0])&& nameCaseMethod.Equals(MainWindowControl.NameCase.camelCase))
 					{
 						ErrorReporter.AddWarning("Flawed method name : " + mds.Identifier, document.FilePath);
 					}
+					//check if PascalCase constraint is violatet
 					if (char.IsLower(regexmatchstring[0]) && nameCaseMethod.Equals(MainWindowControl.NameCase.PascalCase))
 					{
 						ErrorReporter.AddWarning("Flawed method name : " + mds.Identifier, document.FilePath);
@@ -116,10 +113,12 @@ namespace Plugin_Entwicklung.Controller
                 //determin whether the variable name only contains letters of the abc
                 if (Regex.Matches(regexmatchstring, @"[a-zA-Z ]").Count == regexmatchstring.Length)
                 {
+					//check if camelCase constraint is violatet
 					if (char.IsUpper(regexmatchstring[0]) && nameCaseVariable.Equals(MainWindowControl.NameCase.camelCase))
 					{
 						ErrorReporter.AddWarning("Flawed method name : " + vds.Identifier, document.FilePath);
 					}
+					//check if PascalCase constraint is violatet
 					if (char.IsLower(regexmatchstring[0]) && nameCaseVariable.Equals(MainWindowControl.NameCase.PascalCase))
 					{
 						ErrorReporter.AddWarning("Flawed method name : " + vds.Identifier, document.FilePath);
@@ -169,10 +168,12 @@ namespace Plugin_Entwicklung.Controller
                 //determin whether the property name only contains letters of the abc
                 if (Regex.Matches(regexmatchstring, @"[a-zA-Z ]").Count == regexmatchstring.Length)
                 {
+					//check if camelCase constraint is violatet
 					if (char.IsUpper(regexmatchstring[0]) && nameCaseProperty.Equals(MainWindowControl.NameCase.camelCase))
 					{
 						ErrorReporter.AddWarning("Flawed method name : " + pds.Identifier, document.FilePath);
 					}
+					//check if PascalCase constraint is violatet
 					if (char.IsLower(regexmatchstring[0]) && nameCaseProperty.Equals(MainWindowControl.NameCase.PascalCase))
 					{
 						ErrorReporter.AddWarning("Flawed method name : " + pds.Identifier, document.FilePath);

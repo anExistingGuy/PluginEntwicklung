@@ -1,12 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
-using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.LanguageServices;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Plugin_Entwicklung.Controller
 {
