@@ -13,9 +13,9 @@ namespace Plugin_Entwicklung.Controller
     {
 
         //The CheckNaming Method which is called from the MainWindowControl.xaml.cs when the assigned button is pressed
-        public void CheckNaming(List<Document> documents, List<string> permittedmethodstrings,
-            List<string> permittedvariablestrings, List<string> permittedpropertystrings,
-            bool ismethodchecked, bool isvariablechecked, bool isclasschecked, bool ispropertychecked, bool isnamespacechecked
+        public void CheckNaming(List<Document> documents, List<string> permittedMethods,
+            List<string> permittedVariables, List<string> permittedProperties,
+            bool isMethodChecked, bool isVariableChecked, bool isClassChecked, bool isPropertyChecked, bool isNamespaceChecked
 			,MainWindowControl.NameCase nameCaseMethod, MainWindowControl.NameCase nameCaseVariable, MainWindowControl.NameCase nameCaseProperty)
         {
             foreach (var document in documents)
@@ -26,27 +26,27 @@ namespace Plugin_Entwicklung.Controller
                     SyntaxTree tree;
                     Task<SyntaxTree> t = document.GetSyntaxTreeAsync();
                     tree = t.Result;
-                    if (ismethodchecked)
+                    if (isMethodChecked)
                     {
                         List<MethodDeclarationSyntax> list = tree.GetRoot().DescendantNodes().OfType<MethodDeclarationSyntax>().ToList();
-                        Methodnaming(list, permittedmethodstrings, document, nameCaseMethod);
+                        Methodnaming(list, permittedMethods, document, nameCaseMethod);
                     }
-                    if (isvariablechecked)
+                    if (isVariableChecked)
                     {
                         List<VariableDeclaratorSyntax> list = tree.GetRoot().DescendantNodes().OfType<VariableDeclaratorSyntax>().ToList();
-                        Variablenaming(list, permittedvariablestrings, document, nameCaseVariable);
+                        Variablenaming(list, permittedVariables, document, nameCaseVariable);
                     }
-                    if (isclasschecked)
+                    if (isClassChecked)
                     {
                         List<ClassDeclarationSyntax> list = tree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>().ToList();
                         Classnaming(list, document);
                     }
-                    if (ispropertychecked)
+                    if (isPropertyChecked)
                     {
                         List<PropertyDeclarationSyntax> list = tree.GetRoot().DescendantNodes().OfType<PropertyDeclarationSyntax>().ToList();
-                        Propertynaming(list, permittedpropertystrings, document, nameCaseProperty);
+                        Propertynaming(list, permittedProperties, document, nameCaseProperty);
                     }
-                    if (isnamespacechecked)
+                    if (isNamespaceChecked)
                     {
                         List<NamespaceDeclarationSyntax> list = tree.GetRoot().DescendantNodes().OfType<NamespaceDeclarationSyntax>().ToList();
                         List<string> folders = document.Folders.ToList();
@@ -58,19 +58,19 @@ namespace Plugin_Entwicklung.Controller
         }
 
         //this method checks if the namingconventions for methods set by the user are met for all documents in the project
-        public void Methodnaming(List<MethodDeclarationSyntax> list, List<string> permittedmethodstrings,
+        public void Methodnaming(List<MethodDeclarationSyntax> list, List<string> permittedMethods,
 			Document document, MainWindowControl.NameCase nameCaseMethod)
         {
             list.ForEach(delegate (MethodDeclarationSyntax mds)
             {
-                string currentmethodname = mds.Identifier.ToString();
-                string regexmatchstring = currentmethodname;
+                string currentMethodName = mds.Identifier.ToString();
+                string regexmatchstring = currentMethodName;
                 //permitted special signs get treated like they are not part of the methodname 
-                if (permittedmethodstrings.Equals(""))
+                if (permittedMethods.Equals(""))
                 {
-                    permittedmethodstrings.ForEach(delegate (string permittedstring)
+					permittedMethods.ForEach(delegate (string permitted)
                     {
-                        regexmatchstring = regexmatchstring.Replace(permittedstring, "");
+                        regexmatchstring = regexmatchstring.Replace(permitted, "");
                     });
                 }
                 //determin whether the method name only contains letters of the abc
@@ -95,19 +95,19 @@ namespace Plugin_Entwicklung.Controller
         }
 
         //this method checks if the namingconventions for variables set by the user are met for all documents in the project
-        public void Variablenaming(List<VariableDeclaratorSyntax> list, List<string> permittedvariablestrings, 
+        public void Variablenaming(List<VariableDeclaratorSyntax> list, List<string> permittedVariables, 
 			Document document, MainWindowControl.NameCase nameCaseVariable)
         {
             list.ForEach(delegate (VariableDeclaratorSyntax vds)
             {
-                string currentvariablename = vds.Identifier.ToString();
-                string regexmatchstring = currentvariablename;
+                string currentVariableName = vds.Identifier.ToString();
+                string regexmatchstring = currentVariableName;
                 //permitted special signs get treated like they are not part of the variablename 
-                if (permittedvariablestrings.Equals(""))
+                if (permittedVariables.Equals(""))
                 {
-                    permittedvariablestrings.ForEach(delegate (string permittedstring)
+					permittedVariables.ForEach(delegate (string permitted)
                     {
-                        regexmatchstring = regexmatchstring.Replace(permittedstring, "");
+                        regexmatchstring = regexmatchstring.Replace(permitted, "");
                     });
                 }
                 //determin whether the variable name only contains letters of the abc
@@ -136,9 +136,9 @@ namespace Plugin_Entwicklung.Controller
         {
             list.ForEach(delegate (ClassDeclarationSyntax cds)
             {
-                string currentclassname = cds.Identifier.ToString();
+                string currentClassName = cds.Identifier.ToString();
                 //determin whether the class name only contains letters of the abc and if the first letter is in uppercase
-                if (char.IsUpper(currentclassname[0]) && Regex.Matches(currentclassname, @"[a-zA-Z ]").Count == currentclassname.Length)
+                if (char.IsUpper(currentClassName[0]) && Regex.Matches(currentClassName, @"[a-zA-Z ]").Count == currentClassName.Length)
                 {
 
                 }
@@ -150,19 +150,19 @@ namespace Plugin_Entwicklung.Controller
         }
 
         //this method checks if the namingconventions for propertys set by the user are met for all documents in the project
-        public void Propertynaming(List<PropertyDeclarationSyntax> list, List<string> permittedpropertystrings,
+        public void Propertynaming(List<PropertyDeclarationSyntax> list, List<string> permittedProperties,
 			Document document, MainWindowControl.NameCase nameCaseProperty)
         {
             list.ForEach(delegate (PropertyDeclarationSyntax pds)
             {
-                string currentvariablename = pds.Identifier.ToString();
-                string regexmatchstring = currentvariablename;
+                string currentVariableName = pds.Identifier.ToString();
+                string regexmatchstring = currentVariableName;
                 //permitted special signs get treated like they are not part of the propertyname
-                if (permittedpropertystrings.Equals(""))
+                if (permittedProperties.Equals(""))
                 {
-                    permittedpropertystrings.ForEach(delegate (string permittedstring)
+					permittedProperties.ForEach(delegate (string permitted)
                     {
-                        regexmatchstring = regexmatchstring.Replace(permittedstring, "");
+                        regexmatchstring = regexmatchstring.Replace(permitted, "");
                     });
                 }
                 //determin whether the property name only contains letters of the abc
@@ -189,21 +189,21 @@ namespace Plugin_Entwicklung.Controller
         //this method checks if the namingconventions for namespaces set by the user are met for all documents in the project
         public void Namespacenaming(List<NamespaceDeclarationSyntax> list, String projekt, List<string> folders, Document document)
         {
-            String desirednamespace = projekt;
+            String desiredNamespace = projekt;
             if (list.Count > 1)
             {
                 System.Diagnostics.Debug.WriteLine("Nur 1 Namespace im Dokument ");
             }
             list.ForEach(delegate (NamespaceDeclarationSyntax nds)
             {
-                folders.ForEach(delegate (string fldr)
+                folders.ForEach(delegate (string folder)
                 {
-                    desirednamespace += "." + fldr;
+					desiredNamespace += "." + folder;
                 });
 
-                if (!nds.Name.Equals(desirednamespace))
+                if (!nds.Name.Equals(desiredNamespace))
                 {
-                    ErrorReporter.AddWarning("Wrong namespace : " + nds.Name + "! Should be : " + desirednamespace + "!", document.FilePath);
+                    ErrorReporter.AddWarning("Wrong namespace : " + nds.Name + "! Should be : " + desiredNamespace + "!", document.FilePath);
                 }
             });
         }

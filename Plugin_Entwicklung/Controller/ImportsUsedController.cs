@@ -15,11 +15,11 @@ namespace Plugin_Entwicklung.Controller
 				if (document != null)
 				{
 					Compilation compilation;
-					Task<Compilation> t1 = document.Project.GetCompilationAsync();
-					compilation = t1.Result;
+					Task<Compilation> taskc = document.Project.GetCompilationAsync();
+					compilation = taskc.Result;
 					SyntaxTree tree;
-					Task<SyntaxTree> t2 = document.GetSyntaxTreeAsync();
-					tree = t2.Result;
+					Task<SyntaxTree> taskst = document.GetSyntaxTreeAsync();
+					tree = taskst.Result;
 					var root = tree.GetRoot();
 					//part of this snippet is taken from a solution provided by Jon Skeet in his Stackoverflow post
 					//https://stackoverflow.com/questions/44058243/how-can-i-detect-unused-imports-in-a-script-rather-than-a-document-with-roslyn
